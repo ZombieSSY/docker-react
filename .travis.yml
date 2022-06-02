@@ -1,0 +1,11 @@
+sudo: required # reuiqre super user permission
+services:
+  - docker # Tell travis, we need docker pre-install
+
+# Couple of exec before tests are running
+before_install:
+  - docker build -t wana/docker-react -f Dockerfile.dev .
+
+  # Contains all the different commands that need to be executed to run our test suites
+  script:
+    - docker run wana/docker-react npm run test -- --coverage
