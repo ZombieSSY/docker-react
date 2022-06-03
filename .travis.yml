@@ -7,5 +7,19 @@ before_install:
   - docker build -t wana/docker-react -f Dockerfile.dev .
 
   # Contains all the different commands that need to be executed to run our test suites
-  script:
-    - docker run wana/docker-react npm run test -- --coverage
+script:
+  - docker run wana/docker-react npm run test -- --coverage
+
+deploy:
+  provider: elasticbeanstalk
+  region: "us-west-1"
+  app: "docker-react"
+  env: "Dockerreact-env"
+  # S3 bucket: zip all files into one single file, and copt them to an S3 bucket(hard drive running on AWS)
+  bucker_name: "elasticbeanstalk-us-west-1-496568164197"
+  bucket_path: "docker-react"
+  on:
+    branch: master
+access_key_id: $AWS_ACCESS_KEY
+secret_access_key:
+  secure: "$AWS_SECRET_KEY"
